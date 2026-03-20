@@ -1,0 +1,14 @@
+{
+  "name": "sevenrooms-api",
+  "version": "1.0.0",
+  "description": "Voice agent API for SevenRooms restaurant bookings",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
