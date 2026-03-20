@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SevenRooms Booking API — Developer Docs</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3250;
+      --accent: #6c63ff;
+      --accent2: #00d4aa;
+      --text: #e8eaf0;
+      --muted: #8b90a8;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --code-bg: #13151f;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* Layout */
+    .layout { display: flex; min-height: 100vh; }
+    nav {
+      width: 260px;
+      flex-shrink: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 28px 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    main {
+      flex: 1;
+      max-width: 860px;
+      padding: 48px 56px;
+      overflow: hidden;
+    }
+
+    /* Nav */
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .nav-logo-icon {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .nav-logo-text { font-weight: 700; font-size: 15px; }
+    .nav-logo-sub { font-size: 11px; color: var(--muted); }
+
+    nav ul { list-style: none; }
+    nav li { margin-bottom: 2px; }
+    nav a {
+      display: block;
+      padding: 6px 10px;
+      border-radius: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13.5px;
+      transition: all .15s;
+    }
+    nav a:hover { color: var(--text); background: var(--surface2); }
+    nav a.active { color: var(--accent); background: rgba(108,99,255,.12); }
+    .nav-section {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      padding: 16px 10px 6px;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, rgba(108,99,255,.15), rgba(0,212,170,.08));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px;
+      margin-bottom: 48px;
+    }
+    .hero h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+    .hero h1 span { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { color: var(--muted); font-size: 15px; max-width: 540px; margin-bottom: 20px; }
+    .hero-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid;
+    }
+    .badge-green { color: var(--green); border-color: rgba(34,197,94,.3); background: rgba(34,197,94,.08); }
+    .badge-purple { color: var(--accent); border-color: rgba(108,99,255,.3); background: rgba(108,99,255,.08); }
+    .badge-teal { color: var(--accent2); border-color: rgba(0,212,170,.3); background: rgba(0,212,170,.08); }
+
+    /* Section headings */
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 15px; font-weight: 600; margin: 24px 0 10px; color: var(--text); }
+    p { color: var(--muted); font-size: 14px; margin-bottom: 12px; }
+    section { margin-bottom: 56px; scroll-margin-top: 24px; }
+
+    /* Credentials box */
+    .creds {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .creds-header {
+      background: var(--surface2);
+      padding: 10px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .creds-row {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      gap: 12px;
+    }
+    .creds-label {
+      font-size: 12px;
+      color: var(--muted);
+      width: 100px;
+      flex-shrink: 0;
+    }
+    .creds-value {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      color: var(--accent2);
+      flex: 1;
+      word-break: break-all;
+    }
+    .copy-btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all .15s;
+      flex-shrink: 0;
+    }
+    .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+    .copy-btn.copied { color: var(--green); border-color: var(--green); }
+
+    /* Endpoint cards */
+    .endpoint {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: var(--surface2);
+      cursor: pointer;
+      user-select: none;
+    }
+    .method {
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 5px;
+      min-width: 44px;
+      text-align: center;
+    }
+    .method-get { background: rgba(34,197,94,.15); color: var(--green); }
+    .method-post { background: rgba(108,99,255,.15); color: var(--accent); }
+    .endpoint-path {
+      font-family: monospace;
+      font-size: 14px;
+      color: var(--text);
+      flex: 1;
+    }
+    .endpoint-desc { font-size: 13px; color: var(--muted); }
+    .endpoint-body { padding: 20px; border-top: 1px solid var(--border); }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+    th {
+      text-align: left;
+      padding: 8px 12px;
+      background: var(--surface2);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    td code {
+      font-family: monospace;
+      font-size: 12px;
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent2);
+    }
+    .req { color: var(--red); font-size: 12px; }
+    .opt { color: var(--muted); font-size: 12px; }
+
+    /* Code blocks */
+    .code-tabs { margin-bottom: 4px; display: flex; gap: 2px; }
+    .tab-btn {
+      padding: 6px 14px;
+      border-radius: 6px 6px 0 0;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      background: var(--surface2);
+      color: var(--muted);
+      transition: all .15s;
+    }
+    .tab-btn.active { background: var(--code-bg); color: var(--text); }
+    .code-block {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 0 8px 8px 8px;
+      padding: 20px;
+      overflow-x: auto;
+    }
+    .code-block pre {
+      font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text);
+      white-space: pre;
+    }
+    .code-copy {
+      position: absolute;
+      top: 12px; right: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .code-copy:hover { color: var(--text); }
+    .code-copy.copied { color: var(--green); }
+
+    /* Syntax highlight */
+    .kw { color: #c792ea; }
+    .str { color: #c3e88d; }
+    .num { color: #f78c6c; }
+    .cm { color: #546e7a; font-style: italic; }
+    .fn { color: #82aaff; }
+    .key { color: #89ddff; }
+    .var { color: #eeffff; }
+    .pun { color: #89ddff; }
+
+    /* Flow diagram */
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 16px 0;
+    }
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 14px 0;
+    }
+    .flow-num {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .flow-connector {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+      margin-left: 13px;
+    }
+    .flow-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+    .flow-content p { font-size: 13px; color: var(--muted); margin: 0; }
+
+    /* Venue list */
+    .venue-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .venue-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .venue-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .venue-id { font-family: monospace; font-size: 12px; color: var(--accent2); }
+    .venue-addr { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* Alert */
+    .alert {
+      background: rgba(245,158,11,.08);
+      border: 1px solid rgba(245,158,11,.25);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--yellow);
+      margin-bottom: 16px;
+      display: flex;
+      gap: 8px;
+    }
+    .alert-info {
+      background: rgba(108,99,255,.08);
+      border-color: rgba(108,99,255,.25);
+      color: #a5a0ff;
+    }
+
+    /* Error table */
+    .status-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+    .dot-green { background: var(--green); }
+    .dot-red { background: var(--red); }
+    .dot-yellow { background: var(--yellow); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav { display: none; }
+      main { padding: 24px 20px; }
+      .venue-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+  <nav>
+    <div class="nav-logo">
+      <div class="nav-logo-icon">🍽️</div>
+      <div>
+        <div class="nav-logo-text">Booking API</div>
+        <div class="nav-logo-sub">SevenRooms proxy</div>
+      </div>
+    </div>
+    <ul>
+      <li class="nav-section">Getting Started</li>
+      <li><a href="#overview" class="active">Overview</a></li>
+      <li><a href="#credentials">Credentials</a></li>
+      <li><a href="#flow">Agent Flow</a></li>
+
+      <li class="nav-section">Endpoints</li>
+      <li><a href="#health">GET /health</a></li>
+      <li><a href="#venues">GET /venues</a></li>
+      <li><a href="#check-availability">POST /check-availability</a></li>
+      <li><a href="#book">POST /book</a></li>
+
+      <li class="nav-section">Reference</li>
+      <li><a href="#errors">Errors</a></li>
+      <li><a href="#examples">Code Examples</a></li>
+      <li><a href="#venues-list">Venues</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- Hero -->
+    <div class="hero">
+      <h1>SevenRooms <span>Booking API</span></h1>
+      <p>A lightweight REST API for checking availability and booking tables at Dishoom restaurants. Purpose-built for voice agents — typical end-to-end latency under 1 second.</p>
+      <div class="hero-badges">
+        <span class="badge badge-green">✓ Live</span>
+        <span class="badge badge-purple">2 endpoints</span>
+        <span class="badge badge-teal">~600ms avg</span>
+      </div>
+    </div>
+
+    <!-- Overview -->
+    <section id="overview">
+      <h2>Overview</h2>
+      <p>This API wraps the SevenRooms widget API and exposes two simple POST endpoints. No browser automation — just direct HTTP calls, making it fast enough for real-time voice agent use.</p>
+      <p>Authentication uses a static Bearer token. All requests and responses are JSON.</p>
+      <div class="alert alert-info">
+        💡 <span>The <code>/book</code> endpoint places a 5-minute hold then immediately confirms. Reservations are real — test with a real booking and cancel via the confirmation email.</span>
+      </div>
+    </section>
+
+    <!-- Credentials -->
+    <section id="credentials">
+      <h2>Credentials</h2>
+      <div class="creds">
+        <div class="creds-header">🔑 Access details</div>
+        <div class="creds-row">
+          <span class="creds-label">Base URL</span>
+          <span class="creds-value" id="base-url">https://sevenrooms-api-production.up.railway.app</span>
+          <button class="copy-btn" onclick="copyText('base-url', this)">Copy</button>
+        </div>
+        <div class="creds-row">
+          <span class="creds-label">API Key</span>
+          <span class="creds-value" id="api-key">85d6380def8534576e73c78f04aedf989d8b89b9d6bc94f9</span>
+          <button class="copy-btn" onclick="copyText('api-key', this)">Copy</button>
+        </div>
+        <div class="creds-row">
+          <span class="creds-label">Auth header</span>
+          <span class="creds-value">Authorization: Bearer &lt;API_KEY&gt;</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flow -->
+    <section id="flow">
+      <h2>Voice Agent Flow</h2>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-content">
+            <h4>Collect reservation intent</h4>
+            <p>Agent gathers: venue, date, preferred time, party size</p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-content">
+            <h4>POST /check-availability</h4>
+            <p>Returns bookable time slots near the requested time (~400ms)</p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-content">
+            <h4>Read back options to caller</h4>
+            <p>"I have 19:00, 19:30 and 20:00 available — which works for you?"</p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="flow-num">4</div>
+          <div class="flow-content">
+            <h4>Collect guest details</h4>
+            <p>Agent gathers: first name, last name, email, phone number</p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="flow-num">5</div>
+          <div class="flow-content">
+            <h4>POST /book</h4>
+            <p>Pass the chosen slot's IDs + guest details. Returns confirmation (~500ms)</p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="flow-num">6</div>
+          <div class="flow-content">
+            <h4>Confirm to caller</h4>
+            <p>"You're booked! Confirmation number ABC123. See you at Dishoom!"</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GET /health -->
+    <section id="health">
+      <h2>Endpoints</h2>
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method method-get">GET</span>
+          <span class="endpoint-path">/health</span>
+          <span class="endpoint-desc">No auth required</span>
+        </div>
+        <div class="endpoint-body">
+          <p>Liveness check. Returns 200 if the server is running.</p>
+          <h3>Response</h3>
+          <div class="code-block">
+            <pre><span class="pun">{</span>
+  <span class="key">"status"</span><span class="pun">:</span> <span class="str">"ok"</span><span class="pun">,</span>
+  <span class="key">"ts"</span><span class="pun">:</span> <span class="str">"2026-03-20T18:00:00.000Z"</span>
+<span class="pun">}</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- GET /venues -->
+      <div class="endpoint" id="venues">
+        <div class="endpoint-header">
+          <span class="method method-get">GET</span>
+          <span class="endpoint-path">/venues</span>
+          <span class="endpoint-desc">List configured venues</span>
+        </div>
+        <div class="endpoint-body">
+          <p>Returns all venues available for booking, with their <code>id</code> values used in other endpoints.</p>
+          <h3>Response</h3>
+          <div class="code-block">
+            <pre><span class="pun">{</span>
+  <span class="key">"venues"</span><span class="pun">: [</span>
+    <span class="pun">{</span>
+      <span class="key">"id"</span><span class="pun">:</span> <span class="str">"dishoom-manchester"</span><span class="pun">,</span>
+      <span class="key">"name"</span><span class="pun">:</span> <span class="str">"Dishoom Manchester"</span><span class="pun">,</span>
+      <span class="key">"address"</span><span class="pun">:</span> <span class="str">"32 Bridge Street, Manchester, M3 3BT"</span>
+    <span class="pun">},</span>
+    <span class="pun">...</span>
+  <span class="pun">]</span>
+<span class="pun">}</span></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- POST /check-availability -->
+    <section id="check-availability">
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method method-post">POST</span>
+          <span class="endpoint-path">/check-availability</span>
+          <span class="endpoint-desc">Find available time slots</span>
+        </div>
+        <div class="endpoint-body">
+          <p>Returns bookable time slots for a given venue, date and party size. Optionally filter by preferred time (±2 hours).</p>
+
+          <h3>Request body</h3>
+          <table>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+            <tr><td><code>venue</code></td><td>string</td><td><span class="req">required</span></td><td>Venue ID from <code>/venues</code></td></tr>
+            <tr><td><code>date</code></td><td>string</td><td><span class="req">required</span></td><td>Date in <code>YYYY-MM-DD</code> format</td></tr>
+            <tr><td><code>party_size</code></td><td>integer</td><td><span class="req">required</span></td><td>Number of guests</td></tr>
+            <tr><td><code>time</code></td><td>string</td><td><span class="opt">optional</span></td><td>Preferred time <code>HH:MM</code> — filters to ±2h window</td></tr>
+          </table>
+
+          <div class="code-tabs">
+            <button class="tab-btn active" onclick="switchTab(this, 'avail-request')">Request</button>
+            <button class="tab-btn" onclick="switchTab(this, 'avail-response')">Response</button>
+          </div>
+          <div id="avail-request" class="code-block">
+            <button class="code-copy" onclick="copyBlock(this)">Copy</button>
+            <pre><span class="fn">POST</span> <span class="str">/check-availability</span>
+<span class="key">Authorization:</span> <span class="str">Bearer 85d6380def8534576e73c78f04aedf989d8b89b9d6bc94f9</span>
+<span class="key">Content-Type:</span> <span class="str">application/json</span>
+
+<span class="pun">{</span>
+  <span class="key">"venue"</span><span class="pun">:</span>      <span class="str">"dishoom-manchester"</span><span class="pun">,</span>
+  <span class="key">"date"</span><span class="pun">:</span>       <span class="str">"2026-03-25"</span><span class="pun">,</span>
+  <span class="key">"party_size"</span><span class="pun">:</span> <span class="num">4</span><span class="pun">,</span>
+  <span class="key">"time"</span><span class="pun">:</span>       <span class="str">"19:00"</span>  <span class="cm">// optional — filters results to ±2h</span>
+<span class="pun">}</span></pre>
+          </div>
+          <div id="avail-response" class="code-block" style="display:none">
+            <button class="code-copy" onclick="copyBlock(this)">Copy</button>
+            <pre><span class="pun">{</span>
+  <span class="key">"available_times"</span><span class="pun">: [</span>
+    <span class="pun">{</span>
+      <span class="key">"time"</span><span class="pun">:</span>                 <span class="str">"19:00"</span><span class="pun">,</span>
+      <span class="key">"time_iso"</span><span class="pun">:</span>             <span class="str">"2026-03-25 19:00:00"</span><span class="pun">,</span>
+      <span class="key">"access_persistent_id"</span><span class="pun">:</span> <span class="str">"ahNzfn...ABC"</span><span class="pun">,</span>  <span class="cm">// ← pass to /book</span>
+      <span class="key">"shift_persistent_id"</span><span class="pun">:</span>  <span class="str">"ahNzfn...XYZ"</span><span class="pun">,</span>  <span class="cm">// ← pass to /book</span>
+      <span class="key">"shift_name"</span><span class="pun">:</span>           <span class="str">"D7 Mon - Thurs"</span>
+    <span class="pun">},</span>
+    <span class="pun">...</span>
+  <span class="pun">],</span>
+  <span class="key">"date"</span><span class="pun">:</span>       <span class="str">"2026-03-25"</span><span class="pun">,</span>
+  <span class="key">"party_size"</span><span class="pun">:</span> <span class="num">4</span><span class="pun">,</span>
+  <span class="key">"venue_name"</span><span class="pun">:</span> <span class="str">"Dishoom Manchester"</span><span class="pun">,</span>
+  <span class="key">"message"</span><span class="pun">:</span>    <span class="str">"11 slot(s) available"</span>
+<span class="pun">}</span></pre>
+          </div>
+
+          <div class="alert">
+            ⚠️ <span><strong>Important:</strong> The <code>access_persistent_id</code> and <code>shift_persistent_id</code> values are time-sensitive. Pass them directly to <code>/book</code> — don't cache them across sessions.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- POST /book -->
+    <section id="book">
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method method-post">POST</span>
+          <span class="endpoint-path">/book</span>
+          <span class="endpoint-desc">Hold + confirm a reservation</span>
+        </div>
+        <div class="endpoint-body">
+          <p>Places a 5-minute hold on the selected slot and immediately submits the guest details to confirm. Guest receives a confirmation email from SevenRooms.</p>
+
+          <h3>Request body</h3>
+          <table>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+            <tr><td><code>venue</code></td><td>string</td><td><span class="req">required</span></td><td>Venue ID</td></tr>
+            <tr><td><code>date</code></td><td>string</td><td><span class="req">required</span></td><td><code>YYYY-MM-DD</code></td></tr>
+            <tr><td><code>time</code></td><td>string</td><td><span class="req">required</span></td><td><code>HH:MM</code> — must match a slot from <code>/check-availability</code></td></tr>
+            <tr><td><code>party_size</code></td><td>integer</td><td><span class="req">required</span></td><td>Number of guests</td></tr>
+            <tr><td><code>access_persistent_id</code></td><td>string</td><td><span class="req">required</span></td><td>From <code>/check-availability</code> response</td></tr>
+            <tr><td><code>shift_persistent_id</code></td><td>string</td><td><span class="req">required</span></td><td>From <code>/check-availability</code> response</td></tr>
+            <tr><td><code>first_name</code></td><td>string</td><td><span class="req">required</span></td><td>Guest first name</td></tr>
+            <tr><td><code>last_name</code></td><td>string</td><td><span class="req">required</span></td><td>Guest last name</td></tr>
+            <tr><td><code>email</code></td><td>string</td><td><span class="req">required</span></td><td>Guest email (confirmation sent here)</td></tr>
+            <tr><td><code>phone</code></td><td>string</td><td><span class="req">required</span></td><td>International format e.g. <code>+447700900000</code></td></tr>
+            <tr><td><code>phone_dial_code</code></td><td>string</td><td><span class="opt">optional</span></td><td>Dial code without <code>+</code>, defaults to <code>"44"</code></td></tr>
+            <tr><td><code>phone_country_code</code></td><td>string</td><td><span class="opt">optional</span></td><td>ISO alpha-2 country code, defaults to <code>"GB"</code></td></tr>
+          </table>
+
+          <div class="code-tabs">
+            <button class="tab-btn active" onclick="switchTab(this, 'book-request')">Request</button>
+            <button class="tab-btn" onclick="switchTab(this, 'book-response')">Response</button>
+          </div>
+          <div id="book-request" class="code-block">
+            <button class="code-copy" onclick="copyBlock(this)">Copy</button>
+            <pre><span class="fn">POST</span> <span class="str">/book</span>
+<span class="key">Authorization:</span> <span class="str">Bearer 85d6380def8534576e73c78f04aedf989d8b89b9d6bc94f9</span>
+<span class="key">Content-Type:</span> <span class="str">application/json</span>
+
+<span class="pun">{</span>
+  <span class="key">"venue"</span><span class="pun">:</span>                <span class="str">"dishoom-manchester"</span><span class="pun">,</span>
+  <span class="key">"date"</span><span class="pun">:</span>                 <span class="str">"2026-03-25"</span><span class="pun">,</span>
+  <span class="key">"time"</span><span class="pun">:</span>                 <span class="str">"19:30"</span><span class="pun">,</span>
+  <span class="key">"party_size"</span><span class="pun">:</span>           <span class="num">4</span><span class="pun">,</span>
+  <span class="key">"access_persistent_id"</span><span class="pun">:</span> <span class="str">"ahNzfn...ABC"</span><span class="pun">,</span>
+  <span class="key">"shift_persistent_id"</span><span class="pun">:</span>  <span class="str">"ahNzfn...XYZ"</span><span class="pun">,</span>
+
+  <span class="key">"first_name"</span><span class="pun">:</span>           <span class="str">"John"</span><span class="pun">,</span>
+  <span class="key">"last_name"</span><span class="pun">:</span>            <span class="str">"Smith"</span><span class="pun">,</span>
+  <span class="key">"email"</span><span class="pun">:</span>                <span class="str">"john@example.com"</span><span class="pun">,</span>
+  <span class="key">"phone"</span><span class="pun">:</span>                <span class="str">"+447700900000"</span>
+<span class="pun">}</span></pre>
+          </div>
+          <div id="book-response" class="code-block" style="display:none">
+            <button class="code-copy" onclick="copyBlock(this)">Copy</button>
+            <pre><span class="pun">{</span>
+  <span class="key">"success"</span><span class="pun">:</span>          <span class="kw">true</span><span class="pun">,</span>
+  <span class="key">"confirmation_num"</span><span class="pun">:</span> <span class="str">"ABC123"</span><span class="pun">,</span>
+  <span class="key">"reservation_id"</span><span class="pun">:</span>   <span class="str">"..."</span><span class="pun">,</span>
+  <span class="key">"date"</span><span class="pun">:</span>             <span class="str">"2026-03-25"</span><span class="pun">,</span>
+  <span class="key">"time"</span><span class="pun">:</span>             <span class="str">"19:30"</span><span class="pun">,</span>
+  <span class="key">"party_size"</span><span class="pun">:</span>       <span class="num">4</span><span class="pun">,</span>
+  <span class="key">"venue_name"</span><span class="pun">:</span>       <span class="str">"Dishoom Manchester"</span><span class="pun">,</span>
+  <span class="key">"venue_address"</span><span class="pun">:</span>    <span class="str">"32 Bridge Street, Manchester, M3 3BT"</span><span class="pun">,</span>
+  <span class="key">"guest_name"</span><span class="pun">:</span>       <span class="str">"John Smith"</span><span class="pun">,</span>
+  <span class="key">"message"</span><span class="pun">:</span>          <span class="str">"Reservation confirmed at Dishoom Manchester on 2026-03-25 at 19:30 for 4 guests"</span>
+<span class="pun">}</span></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Errors -->
+    <section id="errors">
+      <h2>Error Responses</h2>
+      <p>All errors return JSON with an <code>error</code> field and optional <code>detail</code>.</p>
+      <table>
+        <tr><th>Status</th><th>Meaning</th></tr>
+        <tr><td><span class="status-dot dot-green"></span><code>200</code></td><td>Success</td></tr>
+        <tr><td><span class="status-dot dot-red"></span><code>400</code></td><td>Missing or invalid fields — check the <code>error</code> message</td></tr>
+        <tr><td><span class="status-dot dot-red"></span><code>401</code></td><td>Missing or wrong API key</td></tr>
+        <tr><td><span class="status-dot dot-yellow"></span><code>409</code></td><td>Slot no longer available — call <code>/check-availability</code> again</td></tr>
+        <tr><td><span class="status-dot dot-red"></span><code>500</code></td><td>Internal server error</td></tr>
+        <tr><td><span class="status-dot dot-red"></span><code>502</code></td><td>SevenRooms upstream error</td></tr>
+      </table>
+      <div class="code-block">
+        <pre><span class="cm">// Example error response</span>
+<span class="pun">{</span>
+  <span class="key">"error"</span><span class="pun">:</span> <span class="str">"Slot no longer available — please call /check-availability again"</span>
+<span class="pun">}</span></pre>
+      </div>
+    </section>
+
+    <!-- Code Examples -->
+    <section id="examples">
+      <h2>Code Examples</h2>
+
+      <div class="code-tabs">
+        <button class="tab-btn active" onclick="switchTab(this, 'ex-js')">JavaScript</button>
+        <button class="tab-btn" onclick="switchTab(this, 'ex-python')">Python</button>
+        <button class="tab-btn" onclick="switchTab(this, 'ex-curl')">curl</button>
+      </div>
+
+      <div id="ex-js" class="code-block">
+        <button class="code-copy" onclick="copyBlock(this)">Copy</button>
+        <pre><span class="kw">const</span> <span class="var">BASE</span> <span class="pun">=</span> <span class="str">'https://sevenrooms-api-production.up.railway.app'</span><span class="pun">;</span>
+<span class="kw">const</span> <span class="var">KEY</span>  <span class="pun">=</span> <span class="str">'85d6380def8534576e73c78f04aedf989d8b89b9d6bc94f9'</span><span class="pun">;</span>
+<span class="kw">const</span> <span class="var">headers</span> <span class="pun">= {</span>
+  <span class="str">'Authorization'</span><span class="pun">:</span> <span class="str">`Bearer <span class="pun">${</span><span class="var">KEY</span><span class="pun">}</span>`</span><span class="pun">,</span>
+  <span class="str">'Content-Type'</span><span class="pun">:</span>  <span class="str">'application/json'</span><span class="pun">,</span>
+<span class="pun">};</span>
+
+<span class="cm">// 1. Check availability</span>
+<span class="kw">const</span> <span class="var">avail</span> <span class="pun">=</span> <span class="kw">await</span> <span class="fn">fetch</span><span class="pun">(`</span><span class="str">${BASE}/check-availability</span><span class="pun">`,</span> <span class="pun">{</span>
+  <span class="key">method</span><span class="pun">:</span>  <span class="str">'POST'</span><span class="pun">,</span>
+  <span class="var">headers</span><span class="pun">,</span>
+  <span class="key">body</span><span class="pun">:</span> <span class="fn">JSON.stringify</span><span class="pun">({</span>
+    <span class="key">venue</span><span class="pun">:</span>      <span class="str">'dishoom-manchester'</span><span class="pun">,</span>
+    <span class="key">date</span><span class="pun">:</span>       <span class="str">'2026-03-25'</span><span class="pun">,</span>
+    <span class="key">party_size</span><span class="pun">:</span> <span class="num">4</span><span class="pun">,</span>
+    <span class="key">time</span><span class="pun">:</span>       <span class="str">'19:00'</span><span class="pun">,</span>
+  <span class="pun">}),</span>
+<span class="pun">}).</span><span class="fn">then</span><span class="pun">(</span><span class="var">r</span> <span class="pun">=></span> <span class="var">r</span><span class="pun">.</span><span class="fn">json</span><span class="pun">());</span>
+
+<span class="kw">const</span> <span class="var">slot</span> <span class="pun">=</span> <span class="var">avail</span><span class="pun">.</span><span class="var">available_times</span><span class="pun">[</span><span class="num">0</span><span class="pun">];</span>  <span class="cm">// pick a slot</span>
+
+<span class="cm">// 2. Book</span>
+<span class="kw">const</span> <span class="var">booking</span> <span class="pun">=</span> <span class="kw">await</span> <span class="fn">fetch</span><span class="pun">(`</span><span class="str">${BASE}/book</span><span class="pun">`,</span> <span class="pun">{</span>
+  <span class="key">method</span><span class="pun">:</span>  <span class="str">'POST'</span><span class="pun">,</span>
+  <span class="var">headers</span><span class="pun">,</span>
+  <span class="key">body</span><span class="pun">:</span> <span class="fn">JSON.stringify</span><span class="pun">({</span>
+    <span class="key">venue</span><span class="pun">:</span>                <span class="str">'dishoom-manchester'</span><span class="pun">,</span>
+    <span class="key">date</span><span class="pun">:</span>                 <span class="str">'2026-03-25'</span><span class="pun">,</span>
+    <span class="key">time</span><span class="pun">:</span>                 <span class="var">slot</span><span class="pun">.</span><span class="var">time</span><span class="pun">,</span>
+    <span class="key">party_size</span><span class="pun">:</span>           <span class="num">4</span><span class="pun">,</span>
+    <span class="key">access_persistent_id</span><span class="pun">:</span> <span class="var">slot</span><span class="pun">.</span><span class="var">access_persistent_id</span><span class="pun">,</span>
+    <span class="key">shift_persistent_id</span><span class="pun">:</span>  <span class="var">slot</span><span class="pun">.</span><span class="var">shift_persistent_id</span><span class="pun">,</span>
+    <span class="key">first_name</span><span class="pun">:</span>           <span class="str">'John'</span><span class="pun">,</span>
+    <span class="key">last_name</span><span class="pun">:</span>            <span class="str">'Smith'</span><span class="pun">,</span>
+    <span class="key">email</span><span class="pun">:</span>                <span class="str">'john@example.com'</span><span class="pun">,</span>
+    <span class="key">phone</span><span class="pun">:</span>                <span class="str">'+447700900000'</span><span class="pun">,</span>
+  <span class="pun">}),</span>
+<span class="pun">}).</span><span class="fn">then</span><span class="pun">(</span><span class="var">r</span> <span class="pun">=></span> <span class="var">r</span><span class="pun">.</span><span class="fn">json</span><span class="pun">());</span>
+
+<span class="fn">console</span><span class="pun">.</span><span class="fn">log</span><span class="pun">(</span><span class="var">booking</span><span class="pun">.</span><span class="var">message</span><span class="pun">);</span>
+<span class="cm">// "Reservation confirmed at Dishoom Manchester on 2026-03-25 at 19:00 for 4 guests"</span></pre>
+      </div>
+
+      <div id="ex-python" class="code-block" style="display:none">
+        <button class="code-copy" onclick="copyBlock(this)">Copy</button>
+        <pre><span class="kw">import</span> <span class="var">requests</span>
+
+<span class="var">BASE</span> <span class="pun">=</span> <span class="str">'https://sevenrooms-api-production.up.railway.app'</span>
+<span class="var">KEY</span>  <span class="pun">=</span> <span class="str">'85d6380def8534576e73c78f04aedf989d8b89b9d6bc94f9'</span>
+<span class="var">headers</span> <span class="pun">= {</span><span class="str">'Authorization'</span><span class="pun">:</span> <span class="str">f'Bearer <span class="pun">{</span>KEY<span class="pun">}</span>'</span><span class="pun">}</span>
+
+<span class="cm"># 1. Check availability</span>
+<span class="var">avail</span> <span class="pun">=</span> <span class="var">requests</span><span class="pun">.</span><span class="fn">post</span><span class="pun">(</span><span class="str">f'<span class="pun">{</span>BASE<span class="pun">}</span>/check-availability'</span><span class="pun">,</span> <span class="var">headers</span><span class="pun">=</span><span class="var">headers</span><span class="pun">,</span> <span class="var">json</span><span class="pun">={</span>
+    <span class="str">'venue'</span><span class="pun">:</span>      <span class="str">'dishoom-manchester'</span><span class="pun">,</span>
+    <span class="str">'date'</span><span class="pun">:</span>       <span class="str">'2026-03-25'</span><span class="pun">,</span>
+    <span class="str">'party_size'</span><span class="pun">:</span> <span class="num">4</span><span class="pun">,</span>
+    <span class="str">'time'</span><span class="pun">:</span>       <span class="str">'19:00'</span><span class="pun">,</span>
+<span class="pun">}).</span><span class="fn">json</span><span class="pun">()</span>
+
+<span class="var">slot</span> <span class="pun">=</span> <span class="var">avail</span><span class="pun">[</span><span class="str">'available_times'</span><span class="pun">][</span><span class="num">0</span><span class="pun">]</span>  <span class="cm"># pick a slot</span>
+
+<span class="cm"># 2. Book</span>
+<span class="var">booking</span> <span class="pun">=</span> <span class="var">requests</span><span class="pun">.</span><span class="fn">post</span><span class="pun">(</span><span class="str">f'<span class="pun">{</span>BASE<span class="pun">}</span>/book'</span><span class="pun">,</span> <span class="var">headers</span><span class="pun">=</span><span class="var">headers</span><span class="pun">,</span> <span class="var">json</span><span class="pun">={</span>
+    <span class="str">'venue'</span><span class="pun">:</span>                <span class="str">'dishoom-manchester'</span><span class="pun">,</span>
+    <span class="str">'date'</span><span class="pun">:</span>                 <span class="str">'2026-03-25'</span><span class="pun">,</span>
+    <span class="str">'time'</span><span class="pun">:</span>                 <span class="var">slot</span><span class="pun">[</span><span class="str">'time'</span><span class="pun">],</span>
+    <span class="str">'party_size'</span><span class="pun">:</span>           <span class="num">4</span><span class="pun">,</span>
+    <span class="str">'access_persistent_id'</span><span class="pun">:</span> <span class="var">slot</span><span class="pun">[</span><span class="str">'access_persistent_id'</span><span class="pun">],</span>
+    <span class="str">'shift_persistent_id'</span><span class="pun">:</span>  <span class="var">slot</span><span class="pun">[</span><span class="str">'shift_persistent_id'</span><span class="pun">],</span>
+    <span class="str">'first_name'</span><span class="pun">:</span>           <span class="str">'John'</span><span class="pun">,</span>
+    <span class="str">'last_name'</span><span class="pun">:</span>            <span class="str">'Smith'</span><span class="pun">,</span>
+    <span class="str">'email'</span><span class="pun">:</span>                <span class="str">'john@example.com'</span><span class="pun">,</span>
+    <span class="str">'phone'</span><span class="pun">:</span>                <span class="str">'+447700900000'</span><span class="pun">,</span>
+<span class="pun">}).</span><span class="fn">json</span><span class="pun">()</span>
+
+<span class="fn">print</span><span class="pun">(</span><span class="var">booking</span><span class="pun">[</span><span class="str">'message'</span><span class="pun">])</span>
+<span class="cm"># "Reservation confirmed at Dishoom Manchester on 2026-03-25 at 19:00 for 4 guests"</span></pre>
+      </div>
+
+      <div id="ex-curl" class="code-block" style="display:none">
+        <button class="code-copy" onclick="copyBlock(this)">Copy</button>
+        <pre><span class="cm"># Check availability</span>
+<span class="fn">curl</span> <span class="pun">-X POST</span> https://sevenrooms-api-production.up.railway.app/check-availability <span class="pun">\</span>
+  <span class="pun">-H</span> <span class="str">"Authorization: Bearer 85d6380def8534576e73c78f04aedf989d8b89b9d6bc94f9"</span> <span class="pun">\</span>
+  <span class="pun">-H</span> <span class="str">"Content-Type: application/json"</span> <span class="pun">\</span>
+  <span class="pun">-d</span> <span class="str">'{
+    "venue": "dishoom-manchester",
+    "date": "2026-03-25",
+    "party_size": 4,
+    "time": "19:00"
+  }'</span>
+
+<span class="cm"># Book (use access/shift IDs from above response)</span>
+<span class="fn">curl</span> <span class="pun">-X POST</span> https://sevenrooms-api-production.up.railway.app/book <span class="pun">\</span>
+  <span class="pun">-H</span> <span class="str">"Authorization: Bearer 85d6380def8534576e73c78f04aedf989d8b89b9d6bc94f9"</span> <span class="pun">\</span>
+  <span class="pun">-H</span> <span class="str">"Content-Type: application/json"</span> <span class="pun">\</span>
+  <span class="pun">-d</span> <span class="str">'{
+    "venue": "dishoom-manchester",
+    "date": "2026-03-25",
+    "time": "19:30",
+    "party_size": 4,
+    "access_persistent_id": "...",
+    "shift_persistent_id": "...",
+    "first_name": "John",
+    "last_name": "Smith",
+    "email": "john@example.com",
+    "phone": "+447700900000"
+  }'</span></pre>
+      </div>
+    </section>
+
+    <!-- Venues -->
+    <section id="venues-list">
+      <h2>Configured Venues</h2>
+      <p>Use the <code>id</code> value in the <code>venue</code> field of API requests.</p>
+      <div class="venue-grid">
+        <div class="venue-card">
+          <div class="venue-name">Dishoom Manchester</div>
+          <div class="venue-id">dishoom-manchester</div>
+          <div class="venue-addr">32 Bridge Street, M3 3BT</div>
+        </div>
+        <div class="venue-card">
+          <div class="venue-name">Dishoom Kings Cross</div>
+          <div class="venue-id">dishoom-kings-cross</div>
+          <div class="venue-addr">5 Stable Street, N1C 4AB</div>
+        </div>
+        <div class="venue-card">
+          <div class="venue-name">Dishoom Shoreditch</div>
+          <div class="venue-id">dishoom-shoreditch</div>
+          <div class="venue-addr">7 Boundary Street, E2 7JE</div>
+        </div>
+      </div>
+      <div class="alert alert-info">
+        💡 <span>More venues can be added by updating the <code>VENUES</code> registry in <code>server.js</code> and redeploying.</span>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  function switchTab(btn, targetId) {
+    const parent = btn.closest('.endpoint-body, section, main');
+    // Find all sibling tab buttons
+    btn.closest('.code-tabs').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    // Find matching panels - hide all code blocks that are siblings
+    const siblings = btn.closest('.code-tabs').parentElement.querySelectorAll('[id]');
+    siblings.forEach(el => el.style.display = 'none');
+    const target = document.getElementById(targetId);
+    if (target) target.style.display = 'block';
+  }
+
+  function copyText(elId, btn) {
+    const text = document.getElementById(elId).textContent;
+    navigator.clipboard.writeText(text.trim()).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function copyBlock(btn) {
+    const pre = btn.nextElementSibling.textContent;
+    navigator.clipboard.writeText(pre.trim()).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  // Active nav on scroll
+  const sections = document.querySelectorAll('section[id], div.endpoint[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
+    navLinks.forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

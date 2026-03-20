@@ -13,6 +13,12 @@
 
 import express from 'express';
 import { createHash } from 'crypto';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const DOCS_HTML = readFileSync(join(__dirname, 'docs.html'), 'utf8');
 
 const app = express();
 app.use(express.json());
@@ -99,6 +105,13 @@ async function srFetch(path, { method = 'GET', headers = {}, body } = {}) {
   if (body) opts.body = body;
   return fetch(url, opts);
 }
+
+// ── GET / (docs page) ─────────────────────────────────────────────────────────
+
+app.get('/', (_, res) => {
+  res.setHeader('Content-Type', 'text/html');
+  res.send(DOCS_HTML);
+});
 
 // ── GET /health ───────────────────────────────────────────────────────────────
 
