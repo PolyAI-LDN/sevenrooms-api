@@ -340,11 +340,13 @@ app.post('/book', requireAuth, async (req, res) => {
 
   // ── Step 2: Submit the booking ────────────────────────────────────────────
   try {
-    // SevenRooms wants the local number format (e.g. 07869767467 for UK, not 7869767467)
-    // Strip the international prefix but preserve the local trunk digit (leading 0)
-    const cleanPhone = phone.startsWith('+')
-      ? '0' + phone.replace(/^\+\d{1,3}/, '').replace(/\D/g, '')
-      : phone.replace(/\D/g, '');
+    // SevenRooms wants the local format (e.g. 07869767467 for UK, not 7869767467)
+    // Strip exactly the dial code digits, then re-add the local trunk 0
+    const rawDigits  = phone.replace(/\D/g, '');  // 447869767467
+    const dialDigits = String(phone_dial_code).replace(/\D/g, '');  // 44
+    const cleanPhone = rawDigits.startsWith(dialDigits)
+      ? '0' + rawDigits.slice(dialDigits.length)  // 07869767467
+      : rawDigits;
 
     const form = new FormData();
     const fields = {
