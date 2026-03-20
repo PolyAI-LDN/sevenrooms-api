@@ -403,7 +403,7 @@
       <li class="nav-section">Reference</li>
       <li><a href="#errors">Errors</a></li>
       <li><a href="#examples">Code Examples</a></li>
-      <li><a href="#venues-list">Venues</a></li>
+      <li><a href="#venues-list">Venues (all 11)</a></li>
     </ul>
   </nav>
 
@@ -415,7 +415,7 @@
       <p>A lightweight REST API for checking availability and booking tables at Dishoom restaurants. Purpose-built for voice agents — typical end-to-end latency under 1 second.</p>
       <div class="hero-badges">
         <span class="badge badge-green">✓ Live</span>
-        <span class="badge badge-purple">2 endpoints</span>
+        <span class="badge badge-purple">11 venues · 2 endpoints</span>
         <span class="badge badge-teal">~600ms avg</span>
       </div>
     </div>
@@ -834,13 +834,35 @@
 
     <!-- Venues -->
     <section id="venues-list">
-      <h2>Configured Venues</h2>
-      <p>Use the <code>id</code> value in the <code>venue</code> field of API requests.</p>
+      <h2>All Dishoom Venues</h2>
+      <p>All 11 locations are supported. Use the <code>id</code> value in the <code>venue</code> field of any API request.</p>
+
+      <h3 style="margin-top:20px;margin-bottom:10px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em;">🇬🇧 London</h3>
       <div class="venue-grid">
         <div class="venue-card">
-          <div class="venue-name">Dishoom Manchester</div>
-          <div class="venue-id">dishoom-manchester</div>
-          <div class="venue-addr">32 Bridge Street, M3 3BT</div>
+          <div class="venue-name">Dishoom Battersea</div>
+          <div class="venue-id">dishoom-battersea</div>
+          <div class="venue-addr">Circus Rd West, Battersea Power Station, SW11 8EZ</div>
+        </div>
+        <div class="venue-card">
+          <div class="venue-name">Dishoom Carnaby</div>
+          <div class="venue-id">dishoom-carnaby</div>
+          <div class="venue-addr">22 Kingly Street, W1B 5QP</div>
+        </div>
+        <div class="venue-card">
+          <div class="venue-name">Dishoom Canary Wharf</div>
+          <div class="venue-id">dishoom-canary-wharf</div>
+          <div class="venue-addr">13 Water Street, Wood Wharf, E14 5GX</div>
+        </div>
+        <div class="venue-card">
+          <div class="venue-name">Dishoom Covent Garden</div>
+          <div class="venue-id">dishoom-covent-garden</div>
+          <div class="venue-addr">12 Upper St Martin's Lane, WC2H 9FB</div>
+        </div>
+        <div class="venue-card">
+          <div class="venue-name">Dishoom Kensington</div>
+          <div class="venue-id">dishoom-kensington</div>
+          <div class="venue-addr">Town Hall Parade, Lyric Square, W6 0AT</div>
         </div>
         <div class="venue-card">
           <div class="venue-name">Dishoom Kings Cross</div>
@@ -853,8 +875,33 @@
           <div class="venue-addr">7 Boundary Street, E2 7JE</div>
         </div>
       </div>
-      <div class="alert alert-info">
-        💡 <span>More venues can be added by updating the <code>VENUES</code> registry in <code>server.js</code> and redeploying.</span>
+
+      <h3 style="margin-top:24px;margin-bottom:10px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em;">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland</h3>
+      <div class="venue-grid">
+        <div class="venue-card">
+          <div class="venue-name">Dishoom Edinburgh</div>
+          <div class="venue-id">dishoom-edinburgh</div>
+          <div class="venue-addr">3A St Andrew Square, EH2 2BD</div>
+        </div>
+        <div class="venue-card">
+          <div class="venue-name">Dishoom Glasgow</div>
+          <div class="venue-id">dishoom-glasgow</div>
+          <div class="venue-addr">48 St Vincent Street, G2 5TS</div>
+        </div>
+      </div>
+
+      <h3 style="margin-top:24px;margin-bottom:10px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em;">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England (outside London)</h3>
+      <div class="venue-grid">
+        <div class="venue-card">
+          <div class="venue-name">Dishoom Birmingham</div>
+          <div class="venue-id">dishoom-birmingham</div>
+          <div class="venue-addr">One Chamberlain Square, B3 3AX</div>
+        </div>
+        <div class="venue-card">
+          <div class="venue-name">Dishoom Manchester</div>
+          <div class="venue-id">dishoom-manchester</div>
+          <div class="venue-addr">32 Bridge Street, M3 3BT</div>
+        </div>
       </div>
     </section>
 

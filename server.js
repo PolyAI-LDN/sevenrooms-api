@@ -34,32 +34,85 @@ if (!API_KEY) {
   process.exit(1);
 }
 
-// ── Venue registry ────────────────────────────────────────────────────────────
-// urlKey  = the slug in the SevenRooms explore URL
-// venueId = the opaque ID returned by the availability API
-//
-// To add a venue: open the SevenRooms booking page, grab the urlKey from the
-// URL, then call /check-availability once — the venueId appears in the response
-// shift/access persistent IDs prefix.
+// ── Venue registry — all Dishoom locations ────────────────────────────────────
 
 const VENUES = {
+  'dishoom-battersea': {
+    urlKey:  'dishoombattersea',
+    venueId: 'ahNzfnNldmVucm9vbXMtc2VjdXJlchwLEg9uaWdodGxvb3BfVmVudWUYgICyrfTw8gsM',
+    name:    'Dishoom Battersea',
+    address: 'Circus Road West, Battersea Power Station, London, SW11 8EZ',
+    city:    'London',
+  },
+  'dishoom-carnaby': {
+    urlKey:  'dishoomcarnaby',
+    venueId: 'ahNzfnNldmVucm9vbXMtc2VjdXJlchwLEg9uaWdodGxvb3BfVmVudWUYgIDY67SBzgkM',
+    name:    'Dishoom Carnaby',
+    address: '22 Kingly Street, London, W1B 5QP',
+    city:    'London',
+  },
+  'dishoom-canary-wharf': {
+    urlKey:  'dishoomcanarywharf',
+    venueId: 'ahNzfnNldmVucm9vbXMtc2VjdXJlchwLEg9uaWdodGxvb3BfVmVudWUYgIDs27aMhAgM',
+    name:    'Dishoom Canary Wharf',
+    address: 'Wood Wharf, 13 Water Street, London, E14 5GX',
+    city:    'London',
+  },
+  'dishoom-covent-garden': {
+    urlKey:  'dishoomcoventgarden',
+    venueId: 'ahNzfnNldmVucm9vbXMtc2VjdXJlchwLEg9uaWdodGxvb3BfVmVudWUYgIDYm6uXngkM',
+    name:    'Dishoom Covent Garden',
+    address: "12 Upper St Martin's Lane, London, WC2H 9FB",
+    city:    'London',
+  },
+  'dishoom-kensington': {
+    urlKey:  'dishoomkensington',
+    venueId: 'ahNzfnNldmVucm9vbXMtc2VjdXJlchwLEg9uaWdodGxvb3BfVmVudWUYgIDYi7-ViQkM',
+    name:    'Dishoom Kensington',
+    address: 'Town Hall Parade, Lyric Square, London, W6 0AT',
+    city:    'London',
+  },
+  'dishoom-kings-cross': {
+    urlKey:  'dishoomkingscross',
+    venueId: 'ahNzfnNldmVucm9vbXMtc2VjdXJlchwLEg9uaWdodGxvb3BfVmVudWUYgIDYs8S2mQgM',
+    name:    'Dishoom Kings Cross',
+    address: '5 Stable Street, London, N1C 4AB',
+    city:    'London',
+  },
+  'dishoom-shoreditch': {
+    urlKey:  'dishoomshoreditch',
+    venueId: 'ahNzfnNldmVucm9vbXMtc2VjdXJlchwLEg9uaWdodGxvb3BfVmVudWUYgIDYk7XDugoM',
+    name:    'Dishoom Shoreditch',
+    address: '7 Boundary Street, London, E2 7JE',
+    city:    'London',
+  },
+  'dishoom-birmingham': {
+    urlKey:  'dishoombirmingham',
+    venueId: 'ahNzfnNldmVucm9vbXMtc2VjdXJlchwLEg9uaWdodGxvb3BfVmVudWUYgIDYy9Hy8gkM',
+    name:    'Dishoom Birmingham',
+    address: 'One Chamberlain Square, Birmingham, B3 3AX',
+    city:    'Birmingham',
+  },
+  'dishoom-edinburgh': {
+    urlKey:  'dishoomedinburgh',
+    venueId: 'ahNzfnNldmVucm9vbXMtc2VjdXJlchwLEg9uaWdodGxvb3BfVmVudWUYgIDYq7fAiAoM',
+    name:    'Dishoom Edinburgh',
+    address: '3A St Andrew Square, Edinburgh, EH2 2BD',
+    city:    'Edinburgh',
+  },
+  'dishoom-glasgow': {
+    urlKey:  'dishoomglasgow',
+    venueId: 'ahNzfnNldmVucm9vbXMtc2VjdXJlchwLEg9uaWdodGxvb3BfVmVudWUYgIDZ9qPwzQoM',
+    name:    'Dishoom Glasgow',
+    address: '48 St Vincent Street, Glasgow, G2 5TS',
+    city:    'Glasgow',
+  },
   'dishoom-manchester': {
     urlKey:  'dishoommanchester',
     venueId: 'ahNzfnNldmVucm9vbXMtc2VjdXJlchwLEg9uaWdodGxvb3BfVmVudWUYgIDYi5fW1wkM',
     name:    'Dishoom Manchester',
     address: '32 Bridge Street, Manchester, M3 3BT',
-  },
-  'dishoom-kings-cross': {
-    urlKey:  'dishoomkingscross',
-    venueId: 'ahNzfnNldmVucm9vbXMtc2VjdXJlchwLEg9uaWdodGxvb3BfVmVudWUYgIC4zL6l6wgM',
-    name:    'Dishoom Kings Cross',
-    address: '5 Stable Street, London, N1C 4AB',
-  },
-  'dishoom-shoreditch': {
-    urlKey:  'dishoomshoreditch',
-    venueId: null,  // set after first /check-availability call
-    name:    'Dishoom Shoreditch',
-    address: '7 Boundary Street, London, E2 7JE',
+    city:    'Manchester',
   },
 };
 
@@ -124,7 +177,7 @@ app.get('/health', (_, res) => {
 app.get('/venues', requireAuth, (_, res) => {
   res.json({
     venues: Object.entries(VENUES).map(([id, v]) => ({
-      id, name: v.name, address: v.address,
+      id, name: v.name, city: v.city, address: v.address,
     })),
   });
 });
