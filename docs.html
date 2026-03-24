@@ -442,7 +442,7 @@
         </div>
         <div class="creds-row">
           <span class="creds-label">API Key</span>
-          <span class="creds-value" id="api-key">85d6380def8534576e73c78f04aedf989d8b89b9d6bc94f9</span>
+          <span class="creds-value" id="api-key">YOUR_API_KEY_HERE</span>
           <button class="copy-btn" onclick="copyText('api-key', this)">Copy</button>
         </div>
         <div class="creds-row">
@@ -580,7 +580,7 @@
           <div id="avail-request" class="code-block">
             <button class="code-copy" onclick="copyBlock(this)">Copy</button>
             <pre><span class="fn">POST</span> <span class="str">/check-availability</span>
-<span class="key">Authorization:</span> <span class="str">Bearer 85d6380def8534576e73c78f04aedf989d8b89b9d6bc94f9</span>
+<span class="key">Authorization:</span> <span class="str">Bearer YOUR_API_KEY_HERE</span>
 <span class="key">Content-Type:</span> <span class="str">application/json</span>
 
 <span class="pun">{</span>
@@ -652,7 +652,7 @@
           <div id="book-request" class="code-block">
             <button class="code-copy" onclick="copyBlock(this)">Copy</button>
             <pre><span class="fn">POST</span> <span class="str">/book</span>
-<span class="key">Authorization:</span> <span class="str">Bearer 85d6380def8534576e73c78f04aedf989d8b89b9d6bc94f9</span>
+<span class="key">Authorization:</span> <span class="str">Bearer YOUR_API_KEY_HERE</span>
 <span class="key">Content-Type:</span> <span class="str">application/json</span>
 
 <span class="pun">{</span>
@@ -722,7 +722,7 @@
       <div id="ex-js" class="code-block">
         <button class="code-copy" onclick="copyBlock(this)">Copy</button>
         <pre><span class="kw">const</span> <span class="var">BASE</span> <span class="pun">=</span> <span class="str">'https://sevenrooms-api-production.up.railway.app'</span><span class="pun">;</span>
-<span class="kw">const</span> <span class="var">KEY</span>  <span class="pun">=</span> <span class="str">'85d6380def8534576e73c78f04aedf989d8b89b9d6bc94f9'</span><span class="pun">;</span>
+<span class="kw">const</span> <span class="var">KEY</span>  <span class="pun">=</span> <span class="str">'YOUR_API_KEY_HERE'</span><span class="pun">;</span>
 <span class="kw">const</span> <span class="var">headers</span> <span class="pun">= {</span>
   <span class="str">'Authorization'</span><span class="pun">:</span> <span class="str">`Bearer <span class="pun">${</span><span class="var">KEY</span><span class="pun">}</span>`</span><span class="pun">,</span>
   <span class="str">'Content-Type'</span><span class="pun">:</span>  <span class="str">'application/json'</span><span class="pun">,</span>
@@ -769,7 +769,7 @@
         <pre><span class="kw">import</span> <span class="var">requests</span>
 
 <span class="var">BASE</span> <span class="pun">=</span> <span class="str">'https://sevenrooms-api-production.up.railway.app'</span>
-<span class="var">KEY</span>  <span class="pun">=</span> <span class="str">'85d6380def8534576e73c78f04aedf989d8b89b9d6bc94f9'</span>
+<span class="var">KEY</span>  <span class="pun">=</span> <span class="str">'YOUR_API_KEY_HERE'</span>
 <span class="var">headers</span> <span class="pun">= {</span><span class="str">'Authorization'</span><span class="pun">:</span> <span class="str">f'Bearer <span class="pun">{</span>KEY<span class="pun">}</span>'</span><span class="pun">}</span>
 
 <span class="cm"># 1. Check availability</span>
@@ -804,7 +804,7 @@
         <button class="code-copy" onclick="copyBlock(this)">Copy</button>
         <pre><span class="cm"># Check availability</span>
 <span class="fn">curl</span> <span class="pun">-X POST</span> https://sevenrooms-api-production.up.railway.app/check-availability <span class="pun">\</span>
-  <span class="pun">-H</span> <span class="str">"Authorization: Bearer 85d6380def8534576e73c78f04aedf989d8b89b9d6bc94f9"</span> <span class="pun">\</span>
+  <span class="pun">-H</span> <span class="str">"Authorization: Bearer YOUR_API_KEY_HERE"</span> <span class="pun">\</span>
   <span class="pun">-H</span> <span class="str">"Content-Type: application/json"</span> <span class="pun">\</span>
   <span class="pun">-d</span> <span class="str">'{
     "venue": "dishoom-manchester",
@@ -815,7 +815,7 @@
 
 <span class="cm"># Book (use access/shift IDs from above response)</span>
 <span class="fn">curl</span> <span class="pun">-X POST</span> https://sevenrooms-api-production.up.railway.app/book <span class="pun">\</span>
-  <span class="pun">-H</span> <span class="str">"Authorization: Bearer 85d6380def8534576e73c78f04aedf989d8b89b9d6bc94f9"</span> <span class="pun">\</span>
+  <span class="pun">-H</span> <span class="str">"Authorization: Bearer YOUR_API_KEY_HERE"</span> <span class="pun">\</span>
   <span class="pun">-H</span> <span class="str">"Content-Type: application/json"</span> <span class="pun">\</span>
   <span class="pun">-d</span> <span class="str">'{
     "venue": "dishoom-manchester",
